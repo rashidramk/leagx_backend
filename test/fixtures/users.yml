@@ -22,6 +22,10 @@
 #  unconfirmed_email      :string
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
+#  profile_img            :string
+#  cover_img              :string
+#  provider               :string
+#  uid                    :string
 #
 # Indexes
 #

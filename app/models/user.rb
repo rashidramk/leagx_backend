@@ -22,6 +22,10 @@
 #  unconfirmed_email      :string
 #  confirmed_at           :datetime
 #  confirmation_sent_at   :datetime
+#  profile_img            :string
+#  cover_img              :string
+#  provider               :string
+#  uid                    :string
 #
 # Indexes
 #
@@ -137,6 +141,7 @@ class User < ApplicationRecord
   def active_device
     self.user_devices.active.first
   end
+  
   def self.filter_fields
     {
         email: 'Email',
