@@ -8,12 +8,12 @@ class Api::V1::UsersController < ApplicationController
   # GET /users
   def index
     @users = User.all
-    render json: @users, include: [:subscription]
+    render json: @users
   end
 
   # GET /users/1
   def show
-    render json: @user, include: [:subscription, :user_devices]
+    render json: @user, include: [:user_devices]
   end
 
   # POST /users
@@ -24,9 +24,12 @@ class Api::V1::UsersController < ApplicationController
     end
     pass = params[:user][:password]
     @user.password=@user.password_confirmation=pass
+    # debugger
+    @user.confirmation_token = nil
+    @user.confirmed_at = DateTime.now    
     if @user.save
       @user.setup_devices(params[:PushToken]) if params[:PushToken].present?
-      render json: @user, include: [:subscription], status: :created
+      render json: @user, status: :created
     else
       render :json => {:error => "Unable to create user at this time.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity
     end
@@ -35,7 +38,7 @@ class Api::V1::UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      render json: @user, include: [:subscription]
+      render json: @user
     else
       render :json => {:error => "Unable to update record this time. Please try again later.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity
     end
@@ -48,7 +51,7 @@ class Api::V1::UsersController < ApplicationController
 
   def update_password
     if @user.update(user_params)
-      render json: @user, include: [:subscription]
+      render json: @user
     else
       render :json => {:error => "Record not found"}, :status => :unprocessable_entity
     end
@@ -81,7 +84,7 @@ class Api::V1::UsersController < ApplicationController
     @user.confirmed_at = DateTime.now
     if @user.provider.present? && @user.save
       @user.setup_devices(params[:PushToken]) if params[:PushToken].present?
-      render json: @user, include: [:subscription, :user_devices], status: :ok
+      render json: @user, include: [:user_devices], status: :ok
     else
       render :json => {:error => "Unable to create user at this time.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity
     end
@@ -120,7 +123,7 @@ class Api::V1::UsersController < ApplicationController
 
   # Only allow a trusted parameter “white list” through.
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :phone, :gender, :address, :trial, :trial_start_on, :dob, :provider, :uid, :profile_img)
+    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :phone, :gender, :address, :dob, :provider, :uid)
   end
 
   def verify_api_token

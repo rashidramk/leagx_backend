@@ -19,7 +19,7 @@ class PushMessage < ApplicationRecord
 
   validates :description, presence: true
 
-  after_create :send_push_to_users
+  # after_create :send_push_to_users
 
   def send_push_to_users
     # users= self.users.joins(:user_devices).uniq
