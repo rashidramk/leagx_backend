@@ -3,7 +3,7 @@ class Api::V1::UsersController < ApplicationController
   # skip_before_action :verify_authenticity_token
 
   # before_action :verify_api_token, except: [:create, :forgot_password, :social_auth]
-  before_action :set_user, only: [:show, :update, :destroy, :update_password, :get_workout_history]
+  before_action :set_user, only: [:show, :update, :destroy, :update_password]
   before_action :check_user_with_email, only: [:social_auth]
   # GET /users
   def index
@@ -74,7 +74,7 @@ class Api::V1::UsersController < ApplicationController
         user.email = params[:user][:email].downcase
         user.first_name = params[:user][:first_name]
         user.last_name = params[:user][:last_name]
-        user.password = 'swolefb123' #Test Passwor
+        user.password = 'testpass123' #Test Passwor
       end
     end
     @user.provider = params[:user][:provider]
@@ -88,20 +88,6 @@ class Api::V1::UsersController < ApplicationController
     else
       render :json => {:error => "Unable to create user at this time.", error_log: @user.errors.full_messages}, :status => :unprocessable_entity
     end
-  end
-
-  def get_workout_history
-    hisotry = @user.user_workout_histories.order("created_at DESC").pluck(:workout_id)
-    re = []
-    hisotry.each do |h|
-      w= Workout.find_by(id: h)
-     if w.present?
-       wp = JSON.parse(w.to_json)
-       wp[:category] = JSON.parse(w.category.to_json)
-       re.push(wp)
-     end
-    end
-    render :json => re
   end
 
   private

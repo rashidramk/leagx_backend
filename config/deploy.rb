@@ -2,8 +2,8 @@
 lock "~> 3.16.0"
 
 
-set :application, "mir_server"
-set :repo_url, "git@github.com:oraxtech/mir_server.git"
+set :application, "leagx-backend"
+set :repo_url, "git@github.com:oraxtech/leagx-backend.git"
 
 
 set :rbenv_type, :system # or :system, depends on your rbenv setup
@@ -21,7 +21,7 @@ set :rbenv_roles, :all # default value
 
 #
 set :ssh_options, {
-    keys: %w(/Users/rashedmehmood/pem_keys/mirserver.pem),
+    keys: %w(/Users/rashedmehmood/pem_keys/leagx-backend.pem),
     forward_agent: true
     #  auth_methods: %w(password)
 }

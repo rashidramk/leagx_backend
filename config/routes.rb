@@ -12,7 +12,6 @@ Rails.application.routes.draw do
       resources :users do
         member do
           put :update_password
-          get :get_workout_history
         end
         collection do
           put :forgot_password
