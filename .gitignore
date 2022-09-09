@@ -47,3 +47,5 @@
 .ruby-gemset
 /.rbenv-gemsets
 /config/database.yml
+.DS_Store
+/public/.DS_Store

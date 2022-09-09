@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   before_action :authenticate_user!, except: [:handle_no_rout, :confirmation]
-  before_action :set_from_to_date, except: [:handle_no_rout]
+  # before_action :set_from_to_date, except: [:handle_no_rout]
 
 
   def handle_no_rout
@@ -13,7 +13,7 @@ class HomeController < ApplicationController
   end
 
   def index
-    render layout: 'home'
+    # render layout: 'application'
   end
 
   def confirmation
